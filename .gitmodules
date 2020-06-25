@@ -1,0 +1,15 @@
+[submodule "roles/ome.postgres-exporter"]
+	path = roles/ome.postgres-exporter
+	url = https://github.com/bryanasdev000/ansible-role-prometheus-postgres
+[submodule "roles/cloudalchemy.prometheus"]
+	path = roles/cloudalchemy.prometheus
+	url = https://github.com/cloudalchemy/ansible-prometheus
+[submodule "roles/cloudalchemy.grafana"]
+	path = roles/cloudalchemy.grafana
+	url = https://github.com/cloudalchemy/ansible-grafana
+[submodule "roles/cloudalchemy.alertmanager"]
+	path = roles/cloudalchemy.alertmanager
+	url = https://github.com/cloudalchemy/ansible-alertmanager
+[submodule "roles/cloudalchemy.node-exporter"]
+	path = roles/cloudalchemy.node-exporter
+	url = https://github.com/cloudalchemy/ansible-node-exporter
