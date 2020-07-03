@@ -2,7 +2,7 @@
 - name: Prometheus role
   hosts: monitoring
   become: yes
-  # TODO Add Grafana dashboards provisioning
+  tags: prometheus
   roles:
     - role: cloudalchemy.prometheus
       vars:
@@ -12,46 +12,11 @@
             static_configs:
               - targets:
                 - "{{ ansible_fqdn | default(ansible_host) | default('localhost') }}:9093"
-        prometheus_scrape_configs:
-          - job_name: "node"
-            metrics_path: /metrics
-            static_configs:
-            - targets:
-              - "{% for host in groups['node'] %}{{ hostvars[host]['ansible_fqdn'] }}:9100{% endfor %}"     
-          - job_name: "postgresql"
-            metrics_path: /metrics
-            static_configs:
-            - targets:
-              - "{% for host in groups['postgres'] %}{{ hostvars[host]['ansible_fqdn'] }}:9187{% endfor %}"     
-          - job_name: "awx"
-            tls_config:
-              insecure_skip_verify: True
-            metrics_path: /api/v2/metrics
-            basic_auth:
-              username: "{{ AWX_USER }}"
-              password: "{{ AWX_PASS }}"
-            static_configs:
-            - targets:
-              - "{% for host in groups['awx'] %}{{ hostvars[host]['ansible_fqdn'] }}:80{% endfor %}"     
-          - job_name: "alertmanager"
-            metrics_path: /metrics
-            static_configs:
-            - targets:
-              - "{{ ansible_fqdn | default(ansible_host) | default('localhost') }}:9093"
-          - job_name: "grafana"
-            metrics_path: /metrics
-            static_configs:
-            - targets:
-              - "{{ ansible_fqdn | default(ansible_host) | default('localhost') }}:3000"
-          - job_name: "prometheus"
-            metrics_path: "{{ prometheus_metrics_path }}"
-            static_configs:
-              - targets:
-                  - "{{ ansible_fqdn | default(ansible_host) | default('localhost') }}:9090"
    
 - name: AlertManager role
   hosts: monitoring
   become: yes
+  tags: alertmanager
   roles:
     - role: cloudalchemy.alertmanager
       vars:
@@ -67,6 +32,7 @@
 - name: Grafana role
   hosts: monitoring
   become: yes
+  tags: grafana
   roles:
     - role: cloudalchemy.grafana
       vars:
@@ -99,6 +65,7 @@
 - name: Node exporter role
   hosts: node
   become: yes
+  tags: node
   roles:
     - cloudalchemy.node-exporter
 
